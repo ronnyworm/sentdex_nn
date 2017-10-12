@@ -7,9 +7,21 @@ from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.estimator import regression
 import tflearn.datasets.mnist as mnist
 
-X, Y, test_x, test_y = mnist.load_data(one_hot=True)
+# nur für Bildspeicherung
+from scipy.misc import imread, imsave, imresize
+import numpy as np
+import sys
 
+def to_rgb(img):
+	if len(img.shape) == 3 and img.shape[2] == 1:
+		return np.concatenate((img,img,img), axis=2)
+
+X, Y, test_x, test_y = mnist.load_data(one_hot=True)
 X = X.reshape([-1, 28, 28, 1])
+
+# output first fifty digits
+#[imsave(str(i) + ".jpg", to_rgb(1 - X[i])) for i in range(50)]
+
 test_x = test_x.reshape([-1, 28, 28, 1])
 
 convnet = input_data(shape=[None, 28, 28, 1], name='input')
